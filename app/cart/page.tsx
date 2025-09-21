@@ -56,6 +56,25 @@ export default function CartPage() {
           <Button onClick={() => router.push('/explore')} className="mt-4 w-full button-primary">
             Continue Shopping
           </Button>
+
+          <div className="fixed bottom-0 left-0 right-0 flex justify-around bg-white border-t border-gray-200 py-3 px-4 z-10">
+            <button onClick={() => router.push('/')} className="flex flex-col items-center text-gray-500">
+              <Home className="mb-1" size={24} />
+              <span className="text-xs">Home</span>
+            </button>
+            <button onClick={() => router.push('/explore')} className="flex flex-col items-center text-gray-500">
+              <Compass className="mb-1" size={24} />
+              <span className="text-xs">Explore</span>
+            </button>
+            <button className="flex flex-col items-center text-primary-orange">
+              <ShoppingCart className="mb-1" size={24} />
+              <span className="text-xs">Cart</span>
+            </button>
+            <button onClick={() => router.push('/orders')} className="flex flex-col items-center text-gray-500">
+              <Package className="mb-1" size={24} />
+              <span className="text-xs">Orders</span>
+            </button>
+          </div>
         </div>
       </ProtectedRoute>
     );
