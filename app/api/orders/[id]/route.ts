@@ -3,7 +3,8 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db, auth } from '../../../../lib/firebase-server';
 import { Order } from '../../../../types';
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, context: { params: Promise<{ id: string }> }) {
+  const params = await context.params;
   const user = auth.currentUser;
 
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

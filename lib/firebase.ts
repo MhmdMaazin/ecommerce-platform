@@ -1,7 +1,7 @@
 'use client';
 
 
-import { initializeApp } from 'firebase/app';
+import { initializeApp, type FirebaseApp } from 'firebase/app';
 import { 
   getAuth, 
   createUserWithEmailAndPassword, 
@@ -25,13 +25,13 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-let app: any;
+let app: FirebaseApp | undefined;
 
 export const initializeFirebase = () => {
   if (!app) {
     app = initializeApp(firebaseConfig);
   }
-  return app;
+  return app as FirebaseApp;
 };
 
 // Initialize Firebase immediately for client-side usage

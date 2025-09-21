@@ -8,10 +8,10 @@ import { useAuth } from '../../lib/firebase';
 import { MapPin, CreditCard, Wallet } from 'lucide-react';
 
 export default function CheckoutPage() {
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [products, setProducts] = useState<{ [key: string]: Product }>({});
+  const [cart] = useState<CartItem[]>([]);
+  const [products] = useState<{ [key: string]: Product }>({});
   const [address, setAddress] = useState('');
-  const [deliveryOption, setDeliveryOption] = useState('Standard');
+  const [deliveryOption] = useState('Standard');
   const router = useRouter();
   const { user, loading } = useAuth();
 

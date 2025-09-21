@@ -47,7 +47,7 @@ export default function OrdersPage() {
         <div className="flex flex-col items-center justify-center flex-1">
           <Package className="text-gray-400 mb-4" size={120} />
           <h2 className="text-xl font-bold mb-2">No Orders Yet</h2>
-          <p className="text-gray-600 text-center mb-4">You haven't placed any orders yet.</p>
+          <p className="text-gray-600 text-center mb-4">You haven&apos;t placed any orders yet.</p>
         </div>
       ) : (
         <div className="space-y-4 mb-20">

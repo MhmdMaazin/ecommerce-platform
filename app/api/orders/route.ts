@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { collection, doc, setDoc, getDocs, query, where } from 'firebase/firestore';
-import { db, auth } from '../../../lib/firebase-server';
+import { db } from '../../../lib/firebase-server';
 import { Order } from '../../../types';
 
 export async function GET(req: Request) {

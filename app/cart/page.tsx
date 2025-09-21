@@ -13,7 +13,7 @@ export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [products, setProducts] = useState<{ [key: string]: Product }>({});
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     if (user) {

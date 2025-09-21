@@ -34,25 +34,26 @@ export default function LoginPage() {
     try {
       await signIn(email, password);
       // Navigation will be handled by the auth state change listener
-    } catch (err: any) {
-      console.error('Login error:', err);
+    } catch (unknownErr: unknown) {
+      console.error('Login error:', unknownErr);
       let errorMessage = 'Login failed. Please try again.';
-      
-      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+
+      // Narrow FirebaseAuthError-like objects
+      const err = unknownErr as { code?: string } | undefined;
+      if (err?.code === 'auth/user-not-found' || err?.code === 'auth/wrong-password') {
         errorMessage = 'Invalid email or password.';
-      } else if (err.code === 'auth/too-many-requests') {
+      } else if (err?.code === 'auth/too-many-requests') {
         errorMessage = 'Too many failed login attempts. Please try again later.';
-      } else if (err.code === 'auth/invalid-email') {
+      } else if (err?.code === 'auth/invalid-email') {
         errorMessage = 'Please enter a valid email address.';
-      } else if (err.code === 'auth/user-disabled') {
+      } else if (err?.code === 'auth/user-disabled') {
         errorMessage = 'This account has been disabled. Please contact support.';
-      } else if (err.code === 'auth/network-request-failed') {
+      } else if (err?.code === 'auth/network-request-failed') {
         errorMessage = 'Network error. Please check your internet connection.';
       }
-      
+
       setError(errorMessage);
     } finally {
-      setLoading(false);
       setLoading(false);
     }
   };
@@ -116,7 +117,7 @@ export default function LoginPage() {
             </Button>
           </form>
           <p className="text-center text-sm text-gray-600 mt-4">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <a href="/signup" className="text-primary-orange font-semibold">Sign Up</a>
           </p>
         </div>

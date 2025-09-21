@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { db, auth } from '../../../lib/firebase-server';
+import { db } from '../../../lib/firebase-server';
 import { CartItem } from '../../../types';
 
 export async function GET(req: Request) {
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
 
     const docRef = doc(db, 'carts', uid);
     const docSnap = await getDoc(docRef);
-    let items: CartItem[] = docSnap.exists() ? docSnap.data().items : [];
+  const items: CartItem[] = docSnap.exists() ? docSnap.data().items : [];
     const index = items.findIndex(item => item.productId === productId);
     if (index !== -1) {
       if (quantity === 0) items.splice(index, 1);

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '../../components/ui/button';
 import { signUp, onAuthStateChange } from '../../lib/firebase';
-import { Shirt, UserPlus, Mail, Lock, User } from 'lucide-react';
+import { Shirt, UserPlus, Lock, User } from 'lucide-react';
 import { User as FirebaseUser } from 'firebase/auth';
 
 export default function SignupPage() {
@@ -69,22 +69,23 @@ export default function SignupPage() {
     try {
       await signUp(email, password);
       // Navigation will be handled by the auth state change listener
-    } catch (err: any) {
-      console.error('Signup error:', err);
+    } catch (unknownErr: unknown) {
+      console.error('Signup error:', unknownErr);
       let errorMessage = 'Sign-up failed. Please try again.';
-      
-      if (err.code === 'auth/email-already-in-use') {
+
+      const err = unknownErr as { code?: string } | undefined;
+      if (err?.code === 'auth/email-already-in-use') {
         errorMessage = 'An account with this email already exists. Please try logging in instead.';
-      } else if (err.code === 'auth/invalid-email') {
+      } else if (err?.code === 'auth/invalid-email') {
         errorMessage = 'Please enter a valid email address.';
-      } else if (err.code === 'auth/weak-password') {
+      } else if (err?.code === 'auth/weak-password') {
         errorMessage = 'Password is too weak. Please use a stronger password.';
-      } else if (err.code === 'auth/network-request-failed') {
+      } else if (err?.code === 'auth/network-request-failed') {
         errorMessage = 'Network error. Please check your connection and try again.';
-      } else if (err.code === 'auth/operation-not-allowed') {
+      } else if (err?.code === 'auth/operation-not-allowed') {
         errorMessage = 'Email/password registration is not enabled. Please contact support.';
       }
-      
+
       setError(errorMessage);
     } finally {
       setLoading(false);

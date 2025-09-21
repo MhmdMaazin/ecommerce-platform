@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { Button } from '../components/ui/button';
 import { Shirt, User, LogIn } from 'lucide-react';
-import { useAuth, signOutUser } from '../lib/firebase';
+import { useAuth } from '../lib/firebase';
 import { useEffect } from 'react';
 
 export default function LandingPage() {
@@ -16,14 +16,7 @@ export default function LandingPage() {
     }
   }, [user, loading, router]);
 
-  const handleLogout = async () => {
-    try {
-      await signOutUser();
-      router.replace('/');
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
-  };
+  // handleLogout removed because logout is handled elsewhere; keep router logic minimal
 
   if (loading) {
     return (

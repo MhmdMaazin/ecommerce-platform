@@ -6,7 +6,7 @@ import { Product } from '../../types';
 import { ProductCard } from '../../components/ProductCard';
 import { Chip } from '../../components/ui/Chip';
 import { useAuth, signOutUser } from '../../lib/firebase';
-import { LogOut, Home, Compass, ShoppingCart, Settings, Package } from 'lucide-react';
+import { LogOut, Home, Compass, ShoppingCart, Package } from 'lucide-react';
 
 export default function ExplorePage() {
   const [products, setProducts] = useState<Product[]>([]);
