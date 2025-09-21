@@ -3,9 +3,39 @@
 import { useRouter } from 'next/navigation';
 import { Button } from '../components/ui/button';
 import { Shirt, User, LogIn } from 'lucide-react';
+import { useAuth, signOutUser } from '../lib/firebase';
+import { useEffect } from 'react';
 
 export default function LandingPage() {
   const router = useRouter();
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && user) {
+      router.push('/explore');
+    }
+  }, [user, loading, router]);
+
+  const handleLogout = async () => {
+    try {
+      await signOutUser();
+      router.replace('/');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-orange"></div>
+      </div>
+    );
+  }
+
+  if (user) {
+    return null; // Will redirect to explore
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-white px-4 pt-11 pb-8">
@@ -14,7 +44,6 @@ export default function LandingPage() {
         <div className="w-10 h-10 bg-primary-orange rounded-full flex items-center justify-center">
           <Shirt className="text-white" size={24} />
         </div>
-        <button className="text-primary-orange font-semibold" onClick={() => router.push('/explore')}>Skip</button>
       </div>
 
       {/* Hero Image */}

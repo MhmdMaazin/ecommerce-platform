@@ -13,11 +13,13 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const router = useRouter();
 
   useEffect(() => {
+    // Immediately redirect if we know user is not authenticated
     if (!loading && !user) {
-      router.push('/login');
+      router.replace('/login');
     }
   }, [user, loading, router]);
 
+  // Show loading state while checking authentication
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -29,9 +31,11 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     );
   }
 
+  // If not loading and no user, don't render anything while redirecting
   if (!user) {
-    return null; // Router will redirect to login
+    return null;
   }
 
+  // Only render children if we have an authenticated user
   return <>{children}</>;
 }

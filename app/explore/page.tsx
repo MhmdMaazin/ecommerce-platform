@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Product } from '../../types';
 import { ProductCard } from '../../components/ProductCard';
 import { Chip } from '../../components/ui/Chip';
-import { useAuth } from '../../lib/firebase';
-import { Search, Home, Compass, ShoppingCart, Settings, Package } from 'lucide-react';
+import { useAuth, signOutUser } from '../../lib/firebase';
+import { LogOut, Home, Compass, ShoppingCart, Settings, Package } from 'lucide-react';
 
 export default function ExplorePage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -15,7 +15,11 @@ export default function ExplorePage() {
   const { user, loading } = useAuth();
 
   useEffect(() => {
-    if (!loading && !user) router.push('/');
+    if (!loading && !user) {
+      router.replace('/');
+      return;
+    }
+    
     // Fetch products based on category
     if (user) {
       fetch(`/api/products?category=${selectedCategory}`)
@@ -23,6 +27,18 @@ export default function ExplorePage() {
         .then(setProducts);
     }
   }, [selectedCategory, user, loading, router]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-orange"></div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null; // Will redirect to home
+  }
 
   const categories = ['All', 'Men', 'Women', 'Kids', 'Other'];
 
@@ -34,7 +50,19 @@ export default function ExplorePage() {
           <h1 className="text-2xl font-bold">Explore</h1>
           <p className="text-sm text-gray-600">Best Collections</p>
         </div>
-        <Search className="text-gray-600" size={24} />
+        <button 
+          onClick={async () => {
+            try {
+              await signOutUser();
+              router.replace('/');
+            } catch (error) {
+              console.error('Error logging out:', error);
+            }
+          }}
+          className="text-gray-600 hover:text-primary-orange transition-colors"
+        >
+          <LogOut size={24} />
+        </button>
       </div>
 
       {/* Filters */}
