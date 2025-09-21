@@ -111,7 +111,7 @@ export default function ProductDetails({ params }: { params: Promise<{ id: strin
 
         <Button onClick={handleAddToCart} className="w-full button-primary flex items-center justify-center">
           <ShoppingCart className="mr-2" size={18} />
-          Add to Cart ${product.price * quantity}
+          Add to Cart ${(product.price * quantity).toFixed(2)}
         </Button>
       </div>
     </div>

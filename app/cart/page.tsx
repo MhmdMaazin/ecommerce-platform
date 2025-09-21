@@ -99,7 +99,7 @@ export default function CartPage() {
               <div className="flex-1">
                 <h3 className="font-semibold mb-1">{product.title}</h3>
                 <p className="text-sm text-gray-600 mb-1">{item.selectedSize} | {item.selectedColor}</p>
-                <p className="text-primary-orange font-bold mb-2">${product.price}</p>
+                <p className="text-primary-orange font-bold mb-2">${product.price.toFixed(2)}</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <button onClick={() => handleUpdateQuantity(item.productId, item.quantity - 1)} className="w-6 h-6 border rounded-full flex items-center justify-center">
@@ -119,11 +119,11 @@ export default function CartPage() {
           );
         })}
 
-        <div className="fixed bottom-8 left-4 right-4">
+  <div className="fixed bottom-20 left-4 right-4 z-20">
           <div className="card p-4 mb-4">
             <div className="flex justify-between mb-2">
               <span>Total</span>
-              <span className="text-xl font-bold">${total}</span>
+              <span className="text-xl font-bold">${total.toFixed(2)}</span>
             </div>
           </div>
           <Button onClick={() => router.push('/checkout')} className="w-full button-primary mb-4">
