@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '../../../lib/firebase-server';
-import { CartItem } from '../../../types';
+import { CartItem, Product } from '../../../types';
 
 export async function GET(req: Request) {
   try {
-    // Get the user ID from the query parameters
     const { searchParams } = new URL(req.url);
     const uid = searchParams.get('uid');
 
@@ -25,7 +24,6 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    // Get the user ID from the request body
     const { uid, productId, quantity, selectedSize, selectedColor } = await req.json();
 
     if (!uid) {
@@ -34,7 +32,13 @@ export async function POST(req: Request) {
 
     const docRef = doc(db, 'carts', uid);
     const docSnap = await getDoc(docRef);
-  const items: CartItem[] = docSnap.exists() ? docSnap.data().items : [];
+    const items: CartItem[] = docSnap.exists() ? docSnap.data().items : [];
+
+    // Fetch product to get price
+    const productRef = doc(db, 'products', productId);
+    const productSnap = await getDoc(productRef);
+    const price = productSnap.exists() ? (productSnap.data() as Product).price : 0;
+
     const index = items.findIndex(item => item.productId === productId);
     if (index !== -1) {
       if (quantity === 0) items.splice(index, 1);
@@ -44,11 +48,11 @@ export async function POST(req: Request) {
         items[index].selectedColor = selectedColor;
       }
     } else if (quantity > 0) {
-      items.push({ productId, quantity, selectedSize, selectedColor });
+      items.push({ productId, quantity, selectedSize, selectedColor, price });
     }
     await setDoc(docRef, { items });
     return NextResponse.json({ message: 'Cart updated' });
-  } catch (error) {
+  } catch (error: unknown) { // Use unknown instead of any
     console.error('Error updating cart:', error);
     return NextResponse.json({ error: 'Failed to update cart' }, { status: 500 });
   }

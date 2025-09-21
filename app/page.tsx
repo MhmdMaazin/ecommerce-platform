@@ -33,11 +33,11 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white px-4 pt-11 pb-8">
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
+      {/* <div className="flex justify-between items-center mb-8">
         <div className="w-10 h-10 bg-primary-orange rounded-full flex items-center justify-center">
           <Shirt className="text-white" size={24} />
         </div>
-      </div>
+      </div> */}
 
       {/* Hero Image */}
       <div className="flex-1 flex items-center justify-center mb-8">
