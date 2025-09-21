@@ -49,9 +49,10 @@ npm install
 
 ## Running the Application
 
-To run the development server:
+To run the seed script and then start the development server:
 
 ```bash
+npx tsx scripts/seed.ts
 npm run dev
 ```
 
